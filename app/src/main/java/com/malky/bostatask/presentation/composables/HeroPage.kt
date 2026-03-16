@@ -98,7 +98,7 @@ fun HeroPage(
 
             Text(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 24.dp),
-                text = "Last of Us\nPart II",
+                text = "God of War Ragnarok",
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.displayLarge.copy(

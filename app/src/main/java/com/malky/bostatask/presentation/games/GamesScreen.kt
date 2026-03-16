@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.malky.bostatask.navigations.Destinations
@@ -53,9 +54,9 @@ fun GamesScreenContent(
                 .padding(innerPadding)
                 .fillMaxSize()
                 .background(Background),
-            columns = GridCells.Adaptive(190.dp),
+            columns = GridCells.Adaptive(180.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+//            horizontalArrangement = Arrangement.spacedBy(5.dp)
         ) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
@@ -87,8 +88,7 @@ fun GamesScreenContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = if (index % 2 == 0) 22.dp else 0.dp,
-                            end = if (index % 2 == 1) 22.dp else 0.dp
+                            horizontal = 11.dp
                         ),
                     onClick = {
                         navController.navigate(Destinations.GameDetails(id = 1))
@@ -100,6 +100,7 @@ fun GamesScreenContent(
     }
 }
 
+@PreviewScreenSizes
 @Preview(showSystemUi = true)
 @Composable
 private fun PreviewGamesContent() {
