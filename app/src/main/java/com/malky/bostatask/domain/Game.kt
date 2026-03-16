@@ -4,5 +4,7 @@ data class Game(
     val id: Int,
     val name: String,
     val rating: Double,
-    val coverUrl: String
+    val coverUrl: String?,
+    val genres: List<Genre>,
+    val screenshots: List<Screenshot>
 )
