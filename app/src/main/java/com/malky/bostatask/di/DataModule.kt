@@ -99,8 +99,8 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideGamesRepository(service: GamesService): GamesRepository {
-        return GamesRepositoryImpl(service = service)
+    fun provideGamesRepository(service: GamesService, dao: GamesDao): GamesRepository {
+        return GamesRepositoryImpl(service = service, dao = dao)
     }
 
     @Provides

@@ -9,8 +9,16 @@ import com.malky.bostatask.utils.Result
 class GamesServiceImpl(
     private val service: RetrofitGamesService,
 ) : GamesService {
-    override suspend fun fetchGames(): Result<GamesResponseDTO, DataErrors.Remote> {
-        return request { service.fetchGames() }
+    override suspend fun fetchGames(
+        page: Int,
+        pageSize: Int
+    ): Result<GamesResponseDTO, DataErrors.Remote> {
+        return request {
+            service.fetchGames(
+                page = page,
+                pageSize = pageSize
+            )
+        }
     }
 
     override suspend fun fetchGameDescription(id: Int): Result<GameDescriptionDTO, DataErrors.Remote> {

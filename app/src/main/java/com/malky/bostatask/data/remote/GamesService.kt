@@ -6,6 +6,9 @@ import com.malky.bostatask.utils.DataErrors
 import com.malky.bostatask.utils.Result
 
 interface GamesService {
-    suspend fun fetchGames(): Result<GamesResponseDTO, DataErrors.Remote>
+    suspend fun fetchGames(
+        page: Int,
+        pageSize: Int
+    ): Result<GamesResponseDTO, DataErrors.Remote>
     suspend fun fetchGameDescription(id: Int): Result<GameDescriptionDTO, DataErrors.Remote>
 }

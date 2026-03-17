@@ -30,7 +30,8 @@ fun GameDTO.toGameEntity(): GameEntity {
         rating = this.rating,
         ratingTop = this.ratingTop,
         backgroundImage = this.backgroundImage,
-        released = this.released
+        released = this.released,
+        description = null
     )
 }
 

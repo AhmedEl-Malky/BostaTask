@@ -10,5 +10,6 @@ data class GameEntity(
     val rating: Double,
     val ratingTop: Int?,
     val backgroundImage: String?,
-    val released: String?
+    val released: String?,
+    val description: String?
 )

@@ -3,7 +3,6 @@ package com.malky.bostatask.presentation.games
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.malky.bostatask.data.repositories.GamesRepository
-import com.malky.bostatask.utils.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,14 +33,14 @@ class GamesViewModel @Inject constructor(
                     isLoading = true
                 )
             }
-            repository.fetchRemoteGames().onSuccess { gamesResult ->
-                _state.update {
-                    it.copy(
-                        games = gamesResult,
-                        isLoading = false
-                    )
-                }
-            }
+//            repository.fetchRemoteGames().onSuccess { gamesResult ->
+//                _state.update {
+//                    it.copy(
+//                        games = gamesResult,
+//                        isLoading = false
+//                    )
+//                }
+//            }
         }
     }
 }
