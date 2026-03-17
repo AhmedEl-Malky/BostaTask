@@ -6,6 +6,6 @@ import com.malky.bostatask.domain.GameDetails
 @Immutable
 data class GameDetailsState(
     val gameDetails: GameDetails? = null,
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val error: String? = null
 )

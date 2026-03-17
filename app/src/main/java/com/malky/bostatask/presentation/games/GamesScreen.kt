@@ -112,7 +112,7 @@ fun GamesScreenContent(
                                         horizontal = 11.dp
                                     ),
                                 onClick = {
-                                    navController.navigate(Destinations.GameDetails(id = 1))
+                                    navController.navigate(Destinations.GameDetails(id = game.id))
                                 },
                                 game = game
                             )

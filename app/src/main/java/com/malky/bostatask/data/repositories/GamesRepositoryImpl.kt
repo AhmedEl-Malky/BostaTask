@@ -7,14 +7,14 @@ import com.malky.bostatask.data.local.entities.GameWithDetails
 import com.malky.bostatask.data.local.entities.GenreEntity
 import com.malky.bostatask.data.local.entities.ScreenshotEntity
 import com.malky.bostatask.data.mappers.toGameDescription
+import com.malky.bostatask.data.mappers.toGameDetails
 import com.malky.bostatask.data.remote.GamesService
 import com.malky.bostatask.data.utils.query
+import com.malky.bostatask.domain.GameDetails
 import com.malky.bostatask.utils.DataErrors
 import com.malky.bostatask.utils.Result
 import com.malky.bostatask.utils.map
 import com.malky.bostatask.utils.onSuccess
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
 
 class GamesRepositoryImpl(
     private val service: GamesService,
@@ -79,20 +79,21 @@ class GamesRepositoryImpl(
         }
     }
 
-    override fun getGameById(id: Int): Flow<GameWithDetails> {
-        return dao.getGameById(id = id).onEach { gameWithDetails ->
-            val game = gameWithDetails.game
-            if (game.description == null) {
-                fetchGameDescription(id = game.id)
-                    .onSuccess { description ->
-                        updateGameDescription(id = game.id, description = description)
-                    }
-            }
+    override suspend fun getGameById(id: Int): Result<GameDetails, DataErrors.Local> {
+        var description = dao.getGameDescription(id = id)
+        if (description == null) {
+            fetchGameDescription(id = id)
+                .onSuccess {
+                    description = it
+                    updateGameDescription(id, description)
+                }
         }
+        return query { dao.getGameById(id = id).toGameDetails() }
+
     }
 
     override suspend fun getPaginatedGames(limit: Int, offset: Int): List<GameWithDetails> {
         return dao.getPaginatedGames(limit, offset)
     }
-    //endregion
+//endregion
 }

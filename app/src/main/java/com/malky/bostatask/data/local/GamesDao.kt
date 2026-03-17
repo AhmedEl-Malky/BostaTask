@@ -8,7 +8,6 @@ import com.malky.bostatask.data.local.entities.GameEntity
 import com.malky.bostatask.data.local.entities.GameWithDetails
 import com.malky.bostatask.data.local.entities.GenreEntity
 import com.malky.bostatask.data.local.entities.ScreenshotEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GamesDao {
@@ -67,7 +66,10 @@ interface GamesDao {
     @Query("UPDATE GameEntity SET description = :description WHERE id = :id")
     suspend fun updateGameDescription(id: Int, description: String)
 
+    @Query("Select description from GameEntity WHERE id = :id")
+    suspend fun getGameDescription(id: Int): String?
+
     @Transaction
     @Query("SELECT * FROM GameEntity WHERE id = :id")
-    fun getGameById(id: Int): Flow<GameWithDetails>
+    suspend fun getGameById(id: Int): GameWithDetails
 }
