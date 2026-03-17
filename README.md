@@ -73,7 +73,7 @@ This project follows a clean architectural approach, separating the codebase int
 
 1. **Clone the Repo:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/AhmedEl-Malky/BostaTask.git
    cd BostaTask
    ```
 2. **API Key Configuration 🔑:**
