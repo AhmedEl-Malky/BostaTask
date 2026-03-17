@@ -3,7 +3,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack_Compose-4285F4?style=for-the-badge&logo=android&logoColor=white)
-![Clean Architecture](https://img.shields.io/badge/Clean_Architecture-MVVM-orange?style=for-the-badge)
+![Clean Architecture](https://img.shields.io/badge/Clean_Architecture-MVI-orange?style=for-the-badge)
 
 A high-performance Android application built for the **Bosta Technical Assessment**. Designed to
 explore video games using the **RAWG API** with a focus on clean, scalable architecture and a
