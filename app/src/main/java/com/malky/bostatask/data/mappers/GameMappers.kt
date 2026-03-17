@@ -9,8 +9,10 @@ import com.malky.bostatask.data.local.entities.GameWithDetails
 import com.malky.bostatask.data.local.entities.GenreEntity
 import com.malky.bostatask.data.local.entities.ScreenshotEntity
 import com.malky.bostatask.domain.Game
+import com.malky.bostatask.domain.GameDetails
 import com.malky.bostatask.domain.Genre
 import com.malky.bostatask.domain.Screenshot
+import com.malky.bostatask.presentation.games.GameUi
 
 fun GameDTO.toGame(): Game {
     return Game(
@@ -20,6 +22,16 @@ fun GameDTO.toGame(): Game {
         coverUrl = this.backgroundImage,
         genres = this.genres.map { it.toGenre() },
         screenshots = this.shortScreenshots.map { it.toScreenShot() }
+    )
+}
+
+fun Game.toGameUi(): GameUi {
+    return GameUi(
+        id = id,
+        name = name,
+        rating = rating,
+        coverUrl = coverUrl,
+        genres = genres
     )
 }
 
@@ -43,6 +55,19 @@ fun GameWithDetails.toGame(): Game {
         coverUrl = game.backgroundImage,
         genres = genres.map { it.toGenre() },
         screenshots = screenshots.map { it.toScreenshot() }
+    )
+}
+
+fun GameWithDetails.toGameDetails(): GameDetails {
+    return GameDetails(
+        name = this.game.name,
+        coverUrl = this.game.backgroundImage,
+        releaseDate = this.game.released,
+        rating = this.game.rating,
+        topRating = this.game.ratingTop,
+        description = this.game.description ?: "",
+        genres = this.genres.map { it.toGenre() },
+        screenshots = this.screenshots.map { it.toScreenshot() }
     )
 }
 

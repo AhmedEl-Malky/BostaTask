@@ -1,6 +1,5 @@
 package com.malky.bostatask.presentation.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,22 +30,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.malky.bostatask.R
+import coil3.compose.AsyncImage
 
 @Composable
 fun HeroPage(
-    onScrollDown: () -> Unit = {}
+    name: String,
+    releaseDate: String?,
+    coverUrl: String?,
+    onScrollDown: () -> Unit = {},
+    onBack: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        Image(
+        AsyncImage(
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(R.drawable.gow),
+            model = coverUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
@@ -67,7 +69,7 @@ fun HeroPage(
         )
 
         IconButton(
-            onClick = { },
+            onClick = onBack,
             modifier = Modifier
                 .statusBarsPadding()
                 .windowInsetsPadding(WindowInsets.statusBars)
@@ -90,15 +92,17 @@ fun HeroPage(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         ) {
-            Text(
-                text = "10 June 2020",
-                color = Color.White,
-                style = MaterialTheme.typography.titleMedium
-            )
+            releaseDate?.let { date ->
+                Text(
+                    text = date,
+                    color = Color.White,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
 
             Text(
                 modifier = Modifier.padding(vertical = 6.dp, horizontal = 24.dp),
-                text = "God of War Ragnarok",
+                text = name,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.displayLarge.copy(
@@ -139,5 +143,11 @@ fun HeroPage(
 @Preview(showSystemUi = true)
 @Composable
 private fun PreviewHeroPage() {
-    HeroPage()
+
+    HeroPage(
+        name = "",
+        releaseDate = "",
+        coverUrl = "",
+        onBack = {}
+    )
 }

@@ -1,9 +1,12 @@
 package com.malky.bostatask.di
 
 import android.content.Context
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.malky.bostatask.BuildConfig
+import com.malky.bostatask.data.GamesPagingSource
 import com.malky.bostatask.data.local.GamesDao
 import com.malky.bostatask.data.local.GamesDatabase
 import com.malky.bostatask.data.remote.GamesService
@@ -11,6 +14,7 @@ import com.malky.bostatask.data.remote.GamesServiceImpl
 import com.malky.bostatask.data.remote.RetrofitGamesService
 import com.malky.bostatask.data.repositories.GamesRepository
 import com.malky.bostatask.data.repositories.GamesRepositoryImpl
+import com.malky.bostatask.domain.Game
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -116,5 +120,14 @@ object DataModule {
     @Provides
     @Singleton
     fun provideGamesDao(db: GamesDatabase): GamesDao = db.dao
+
+    @Provides
+    @Singleton
+    fun provideGamesPager(repository: GamesRepository): Pager<Int, Game> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = { GamesPagingSource(repository = repository) }
+        )
+    }
 
 }

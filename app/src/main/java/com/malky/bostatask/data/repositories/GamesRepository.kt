@@ -5,9 +5,9 @@ import com.malky.bostatask.data.local.entities.GameEntity
 import com.malky.bostatask.data.local.entities.GameWithDetails
 import com.malky.bostatask.data.local.entities.GenreEntity
 import com.malky.bostatask.data.local.entities.ScreenshotEntity
+import com.malky.bostatask.domain.GameDetails
 import com.malky.bostatask.utils.DataErrors
 import com.malky.bostatask.utils.Result
-import kotlinx.coroutines.flow.Flow
 
 interface GamesRepository {
 
@@ -18,20 +18,19 @@ interface GamesRepository {
 
     suspend fun fetchGameDescription(id: Int): Result<String, DataErrors.Remote>
 
-    suspend fun upsertAllGamesWithDetails(
+    suspend fun cacheGames(
         games: List<GameEntity>,
         genres: List<GenreEntity>,
         screenshots: List<ScreenshotEntity>
     ): Result<Unit, DataErrors.Local>
 
-    suspend fun clearAndUpsertAllGames(
+    suspend fun clearCachedGames(
         games: List<GameEntity>,
         genres: List<GenreEntity>,
         screenshots: List<ScreenshotEntity>
     ): Result<Unit, DataErrors.Local>
 
-    fun getGameById(id: Int): Flow<GameWithDetails>
+    suspend fun getGameById(id: Int): Result<GameDetails, DataErrors.Local>
 
-    suspend fun clearAllGames(): Result<Unit, DataErrors.Local>
-
+    suspend fun getPaginatedGames(limit: Int, offset: Int): List<GameWithDetails>
 }

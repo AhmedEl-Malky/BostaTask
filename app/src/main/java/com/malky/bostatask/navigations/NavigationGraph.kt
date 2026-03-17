@@ -2,16 +2,15 @@ package com.malky.bostatask.navigations
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.malky.bostatask.presentation.details.GameDetailsScreen
+import com.malky.bostatask.presentation.details.GameDetailsViewModel
 import com.malky.bostatask.presentation.games.GamesScreen
 import com.malky.bostatask.presentation.games.GamesViewModel
 
@@ -28,13 +27,15 @@ fun NavigationGraph() {
             navigation<Destinations.AppGraph>(startDestination = Destinations.Games) {
                 composable<Destinations.Games> {
                     val viewModel: GamesViewModel = hiltViewModel()
-                    val state by viewModel.state.collectAsStateWithLifecycle()
                     GamesScreen(
-                        state = state
+                        viewModel = viewModel
                     )
                 }
                 composable<Destinations.GameDetails> {
-                    GameDetailsScreen()
+                    val viewModel: GameDetailsViewModel = hiltViewModel()
+                    GameDetailsScreen(
+                        viewModel = viewModel
+                    )
                 }
             }
         }
