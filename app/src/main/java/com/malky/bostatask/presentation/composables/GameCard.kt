@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.malky.bostatask.R
-import com.malky.bostatask.domain.Game
+import com.malky.bostatask.presentation.games.GameUi
 import com.malky.bostatask.ui.theme.AccentYellow
 import com.malky.bostatask.ui.theme.Surface
 import com.malky.bostatask.ui.theme.TextPrimary
@@ -39,7 +39,7 @@ import com.malky.bostatask.ui.theme.TextSecondary
 fun GameCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    game: Game
+    game: GameUi
 ) {
     Column(
         modifier = modifier
@@ -121,13 +121,12 @@ fun GameCard(
 private fun PreviewGameCard() {
     GameCard(
         onClick = {},
-        game = Game(
+        game = GameUi(
             id = 1,
             name = "Game Name",
             rating = 4.5,
             coverUrl = "",
             genres = emptyList(),
-            screenshots = emptyList()
         )
     )
 }

@@ -1,9 +1,9 @@
 package com.malky.bostatask.presentation.games
 
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,20 +12,19 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import com.malky.bostatask.navigations.Destinations
 import com.malky.bostatask.navigations.LocalNavController
 import com.malky.bostatask.presentation.composables.GameCard
@@ -35,17 +34,17 @@ import com.malky.bostatask.ui.theme.TextPrimary
 
 @Composable
 fun GamesScreen(
-    state: GamesState,
+    gamesPager: LazyPagingItems<GameUi>
 ) {
     GamesScreenContent(
-        state = state
+        gamesPager = gamesPager
     )
 }
 
 
 @Composable
 fun GamesScreenContent(
-    state: GamesState,
+    gamesPager: LazyPagingItems<GameUi>,
     modifier: Modifier = Modifier
 ) {
     //region internal states
@@ -57,21 +56,21 @@ fun GamesScreenContent(
         containerColor = Background,
         contentWindowInsets = WindowInsets.systemBars,
     ) { innerPadding ->
-        Crossfade(targetState = state.isLoading) {
-            if (it) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(
-                        color = TextPrimary
-                    )
-                }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (gamesPager.loadState.refresh is LoadState.Loading) {
+                CircularProgressIndicator(
+                    color = TextPrimary
+                )
             } else {
                 LazyVerticalGrid(
                     modifier = modifier
-                        .padding(innerPadding)
-                        .fillMaxSize()
+                        .weight(1f)
                         .background(Background),
                     columns = GridCells.Adaptive(180.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -101,20 +100,34 @@ fun GamesScreenContent(
                             )
                         )
                     }
-                    itemsIndexed(state.games) { index, game ->
-                        GameCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    horizontal = 11.dp
-                                ),
-                            onClick = {
-                                navController.navigate(Destinations.GameDetails(id = 1))
-                            },
-                            game = game
+                    items(
+                        count = gamesPager.itemCount,
+                        key = gamesPager.itemKey { game -> game.id }
+                    ) { index ->
+                        gamesPager[index]?.let { game ->
+                            GameCard(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = 11.dp
+                                    ),
+                                onClick = {
+                                    navController.navigate(Destinations.GameDetails(id = 1))
+                                },
+                                game = game
+                            )
+                        }
+                    }
+                }
+
+                AnimatedContent(gamesPager.loadState) { loadState ->
+                    if (loadState.append is LoadState.Loading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            color = TextPrimary,
+                            strokeWidth = 5.dp
                         )
                     }
-
                 }
             }
         }
@@ -122,14 +135,14 @@ fun GamesScreenContent(
 }
 
 //@PreviewScreenSizes
-@Preview(showSystemUi = true)
-@Composable
-private fun PreviewGamesContent() {
-    CompositionLocalProvider(
-        LocalNavController provides rememberNavController()
-    ) {
-        GamesScreenContent(
-            state = GamesState(isLoading = true)
-        )
-    }
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//private fun PreviewGamesContent() {
+//    CompositionLocalProvider(
+//        LocalNavController provides rememberNavController()
+//    ) {
+//        GamesScreenContent(
+//            state = GamesState(isLoading = true)
+//        )
+//    }
+//}

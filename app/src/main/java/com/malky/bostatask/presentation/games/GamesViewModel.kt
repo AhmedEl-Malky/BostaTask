@@ -2,45 +2,24 @@ package com.malky.bostatask.presentation.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.malky.bostatask.data.repositories.GamesRepository
+import androidx.paging.Pager
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.malky.bostatask.data.mappers.toGameUi
+import com.malky.bostatask.domain.Game
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
 @HiltViewModel
 class GamesViewModel @Inject constructor(
-    private val repository: GamesRepository
+    pager: Pager<Int, Game>
 ) : ViewModel() {
-    private val _state = MutableStateFlow(GamesState())
-    val state = _state.onStart {
-        fetchGames()
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = GamesState()
-    )
 
-
-    private suspend fun fetchGames() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
-//            repository.fetchRemoteGames().onSuccess { gamesResult ->
-//                _state.update {
-//                    it.copy(
-//                        games = gamesResult,
-//                        isLoading = false
-//                    )
-//                }
-//            }
+    val gamesPagingFlow = pager
+        .flow
+        .map { pagingData ->
+            pagingData.map { game -> game.toGameUi() }
         }
-    }
+        .cachedIn(viewModelScope)
 }

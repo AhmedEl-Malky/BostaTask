@@ -11,6 +11,7 @@ import com.malky.bostatask.data.local.entities.ScreenshotEntity
 import com.malky.bostatask.domain.Game
 import com.malky.bostatask.domain.Genre
 import com.malky.bostatask.domain.Screenshot
+import com.malky.bostatask.presentation.games.GameUi
 
 fun GameDTO.toGame(): Game {
     return Game(
@@ -20,6 +21,16 @@ fun GameDTO.toGame(): Game {
         coverUrl = this.backgroundImage,
         genres = this.genres.map { it.toGenre() },
         screenshots = this.shortScreenshots.map { it.toScreenShot() }
+    )
+}
+
+fun Game.toGameUi(): GameUi {
+    return GameUi(
+        id = id,
+        name = name,
+        rating = rating,
+        coverUrl = coverUrl,
+        genres = genres
     )
 }
 
