@@ -22,9 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -111,10 +109,7 @@ fun DescriptionSection(
                     .fillMaxSize()
                     .padding(horizontal = 18.dp)
             ) {
-                val density = LocalDensity.current
                 val lineHeight = 20.sp
-                val lineHeightPx = with(density) { lineHeight.toPx() }
-                val maxLines = (constraints.maxHeight / lineHeightPx).toInt().coerceAtLeast(1)
 
                 Text(
                     text = pages[page],
@@ -123,28 +118,40 @@ fun DescriptionSection(
                         color = TextSecondary,
                         lineHeight = lineHeight
                     ),
-                    maxLines = maxLines,
-                    overflow = TextOverflow.Ellipsis,
                     onTextLayout = { layoutResult ->
-                        // If this page overflows and we haven't created the next page yet
-                        if (layoutResult.hasVisualOverflow && page == pages.size - 1) {
-                            val lastCharIndex = layoutResult.getLineEnd(maxLines - 1)
+                        val textToSplit = pages[page]
 
-                            // Avoid cutting words in half
-                            val textToSplit = pages[page]
-                            var splitIndex = lastCharIndex
-                            val lastSpace =
-                                textToSplit.substring(0, lastCharIndex).lastIndexOf(' ')
-                            if (lastSpace > lastCharIndex * 0.8) {
-                                splitIndex = lastSpace
+                        var lastVisibleLineIndex = -1
+                        for (i in 0 until layoutResult.lineCount) {
+                            if (layoutResult.getLineBottom(i) > constraints.maxHeight.toFloat()) {
+                                break
+                            }
+                            lastVisibleLineIndex = i
+                        }
+
+                        if (lastVisibleLineIndex != -1 && lastVisibleLineIndex < layoutResult.lineCount - 1) {
+                            val splitIndex = layoutResult.getLineEnd(lastVisibleLineIndex)
+
+                            var actualSplitIndex = splitIndex
+                            val lastSpace = textToSplit.substring(0, splitIndex).lastIndexOf(' ')
+                            if (lastSpace > splitIndex * 0.8) {
+                                actualSplitIndex = lastSpace
                             }
 
-                            val currentPageContent = textToSplit.substring(0, splitIndex).trim()
-                            val remainingContent = textToSplit.substring(splitIndex).trim()
+                            if (actualSplitIndex > 0 && actualSplitIndex < textToSplit.length) {
+                                val currentContent =
+                                    textToSplit.substring(0, actualSplitIndex).trimEnd()
+                                val remainingContent =
+                                    textToSplit.substring(actualSplitIndex).trimStart()
 
-                            if (remainingContent.isNotEmpty()) {
-                                pages[page] = currentPageContent
-                                pages.add(remainingContent)
+                                if (remainingContent.isNotEmpty()) {
+                                    pages[page] = currentContent
+                                    if (page + 1 < pages.size) {
+                                        pages.add(page + 1, remainingContent)
+                                    } else {
+                                        pages.add(remainingContent)
+                                    }
+                                }
                             }
                         }
                     }

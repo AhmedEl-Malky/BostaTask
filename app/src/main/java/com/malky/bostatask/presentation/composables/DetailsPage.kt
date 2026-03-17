@@ -52,7 +52,6 @@ fun DetailsPage(
         Crossfade(
             targetState = game?.screenshots?.getOrNull(screenshotsPagerState.currentPage)?.url,
             animationSpec = tween(durationMillis = 550),
-            label = "HeaderImageCrossfade"
         ) { imageUrl ->
             AsyncImage(
                 modifier = Modifier

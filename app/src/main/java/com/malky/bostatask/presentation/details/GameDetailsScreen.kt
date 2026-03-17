@@ -11,10 +11,12 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.malky.bostatask.navigations.LocalNavController
 import com.malky.bostatask.presentation.composables.DetailsPage
@@ -25,8 +27,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun GameDetailsScreen(
-    state: GameDetailsState
+    viewModel: GameDetailsViewModel
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     GameDetailsContent(
         state = state
     )
