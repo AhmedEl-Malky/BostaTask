@@ -1,6 +1,5 @@
 package com.malky.bostatask.presentation.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +27,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.malky.bostatask.R
+import com.malky.bostatask.domain.Game
 import com.malky.bostatask.ui.theme.AccentYellow
 import com.malky.bostatask.ui.theme.Surface
 import com.malky.bostatask.ui.theme.TextPrimary
@@ -38,6 +39,7 @@ import com.malky.bostatask.ui.theme.TextSecondary
 fun GameCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    game: Game
 ) {
     Column(
         modifier = modifier
@@ -52,12 +54,12 @@ fun GameCard(
             modifier = Modifier
                 .padding(bottom = 8.dp)
         ) {
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .clip(RoundedCornerShape(12.dp))
                     .fillMaxWidth()
                     .aspectRatio(1f),
-                painter = painterResource(R.drawable.gow),
+                model = game.coverUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
             )
@@ -77,7 +79,7 @@ fun GameCard(
                     tint = AccentYellow
                 )
                 Text(
-                    text = "4.5",
+                    text = game.rating.toString(),
                     style = MaterialTheme.typography.labelMedium.copy(
                         fontSize = 14.sp,
                         color = TextPrimary,
@@ -88,7 +90,7 @@ fun GameCard(
         }
 
         Text(
-            text = "God of War Ragnarok",
+            text = game.name,
             style = MaterialTheme.typography.titleMedium.copy(
                 color = TextPrimary,
                 fontWeight = FontWeight.Bold,
@@ -96,15 +98,19 @@ fun GameCard(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(
-            text = "Action , Adventure",
-            style = MaterialTheme.typography.titleSmall.copy(
-                color = TextSecondary,
-                fontWeight = FontWeight.Medium,
-            ),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+        Row {
+            game.genres.forEachIndexed { index, genre ->
+                Text(
+                    text = genre.name + if (index != game.genres.lastIndex) " • " else "",
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        color = TextSecondary,
+                        fontWeight = FontWeight.Medium,
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
 
     }
 }
@@ -114,6 +120,14 @@ fun GameCard(
 @Composable
 private fun PreviewGameCard() {
     GameCard(
-        onClick = {}
+        onClick = {},
+        game = Game(
+            id = 1,
+            name = "Game Name",
+            rating = 4.5,
+            coverUrl = "",
+            genres = emptyList(),
+            screenshots = emptyList()
+        )
     )
 }

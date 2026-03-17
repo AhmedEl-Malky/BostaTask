@@ -5,6 +5,7 @@ data class GameDetails(
     val coverUrl: String,
     val releaseDate: String,
     val rating: Double,
+    val topRating: Int?,
     val description: String,
     val genres: List<String> = emptyList()
 )
