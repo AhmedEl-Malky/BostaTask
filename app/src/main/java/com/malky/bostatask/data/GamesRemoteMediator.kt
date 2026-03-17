@@ -43,7 +43,7 @@ class GamesRemoteMediator(
                 val games = gamesResponse.games
 
                 if (loadType == LoadType.REFRESH) {
-                    repo.clearAndUpsertAllGames(
+                    repo.clearCachedGames(
                         games = games.map { it.toGameEntity() },
                         genres = games.flatMap { game ->
                             game.genres.map { it.toGenreEntity(game.id) }
@@ -53,7 +53,7 @@ class GamesRemoteMediator(
                         }
                     )
                 } else {
-                    repo.upsertAllGamesWithDetails(
+                    repo.cacheGames(
                         games = games.map { it.toGameEntity() },
                         genres = games.flatMap { game ->
                             game.genres.map { it.toGenreEntity(game.id) }

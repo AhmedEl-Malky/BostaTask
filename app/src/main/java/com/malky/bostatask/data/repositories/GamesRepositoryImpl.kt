@@ -20,6 +20,9 @@ class GamesRepositoryImpl(
     private val service: GamesService,
     private val dao: GamesDao
 ) : GamesRepository {
+
+    //region remote data
+
     override suspend fun fetchGameResponseDto(
         page: Int,
         pageSize: Int
@@ -35,14 +38,17 @@ class GamesRepositoryImpl(
             dto.toGameDescription()
         }
     }
+    //endregion
 
-    override suspend fun upsertAllGamesWithDetails(
+
+    //region Local data
+    override suspend fun cacheGames(
         games: List<GameEntity>,
         genres: List<GenreEntity>,
         screenshots: List<ScreenshotEntity>
     ): Result<Unit, DataErrors.Local> {
         return query {
-            dao.upsertAllGamesWithDetails(
+            dao.cacheGames(
                 games = games,
                 genres = genres,
                 screenshots = screenshots
@@ -50,13 +56,13 @@ class GamesRepositoryImpl(
         }
     }
 
-    override suspend fun clearAndUpsertAllGames(
+    override suspend fun clearCachedGames(
         games: List<GameEntity>,
         genres: List<GenreEntity>,
         screenshots: List<ScreenshotEntity>
     ): Result<Unit, DataErrors.Local> {
         return query {
-            dao.clearAndUpsertAllGames(
+            dao.clearCachedGames(
                 games = games,
                 genres = genres,
                 screenshots = screenshots
@@ -85,9 +91,8 @@ class GamesRepositoryImpl(
         }
     }
 
-    override suspend fun clearAllGames(): Result<Unit, DataErrors.Local> {
-        return query {
-            dao.clearAllGames()
-        }
+    override suspend fun getPaginatedGames(limit: Int, offset: Int): List<GameWithDetails> {
+        return dao.getPaginatedGames(limit, offset)
     }
+    //endregion
 }

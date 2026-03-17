@@ -18,13 +18,13 @@ interface GamesRepository {
 
     suspend fun fetchGameDescription(id: Int): Result<String, DataErrors.Remote>
 
-    suspend fun upsertAllGamesWithDetails(
+    suspend fun cacheGames(
         games: List<GameEntity>,
         genres: List<GenreEntity>,
         screenshots: List<ScreenshotEntity>
     ): Result<Unit, DataErrors.Local>
 
-    suspend fun clearAndUpsertAllGames(
+    suspend fun clearCachedGames(
         games: List<GameEntity>,
         genres: List<GenreEntity>,
         screenshots: List<ScreenshotEntity>
@@ -32,6 +32,5 @@ interface GamesRepository {
 
     fun getGameById(id: Int): Flow<GameWithDetails>
 
-    suspend fun clearAllGames(): Result<Unit, DataErrors.Local>
-
+    suspend fun getPaginatedGames(limit: Int, offset: Int): List<GameWithDetails>
 }
