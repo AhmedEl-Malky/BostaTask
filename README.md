@@ -46,7 +46,7 @@ premium user experience.
 | :--- | :--- |
 | **Language** | Kotlin |
 | **UI Framework** | Jetpack Compose (Material 3) |
-| **Architecture** | Clean Architecture (MVVM) |
+| **Architecture** | Clean Architecture (MVI) |
 | **DI** | Dagger Hilt |
 | **Networking** | Retrofit 2 + Kotlinx Serialization |
 | **Local Database** | Room |
