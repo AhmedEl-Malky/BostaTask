@@ -12,9 +12,9 @@ import com.malky.bostatask.data.local.GamesDatabase
 import com.malky.bostatask.data.remote.GamesService
 import com.malky.bostatask.data.remote.GamesServiceImpl
 import com.malky.bostatask.data.remote.RetrofitGamesService
-import com.malky.bostatask.data.repositories.GamesRepository
 import com.malky.bostatask.data.repositories.GamesRepositoryImpl
 import com.malky.bostatask.domain.Game
+import com.malky.bostatask.domain.GamesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

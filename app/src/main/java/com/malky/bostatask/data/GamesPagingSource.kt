@@ -7,8 +7,8 @@ import com.malky.bostatask.data.mappers.toGame
 import com.malky.bostatask.data.mappers.toGameEntity
 import com.malky.bostatask.data.mappers.toGenreEntity
 import com.malky.bostatask.data.mappers.toScreenshotEntity
-import com.malky.bostatask.data.repositories.GamesRepository
 import com.malky.bostatask.domain.Game
+import com.malky.bostatask.domain.GamesRepository
 import com.malky.bostatask.utils.Result
 
 class GamesPagingSource(

@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.malky.bostatask.data.repositories.GamesRepository
+import com.malky.bostatask.domain.GamesRepository
 import com.malky.bostatask.navigations.Destinations
 import com.malky.bostatask.utils.onError
 import com.malky.bostatask.utils.onSuccess

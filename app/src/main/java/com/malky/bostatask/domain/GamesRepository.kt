@@ -1,11 +1,10 @@
-package com.malky.bostatask.data.repositories
+package com.malky.bostatask.domain
 
 import com.malky.bostatask.data.dto.GamesResponseDTO
 import com.malky.bostatask.data.local.entities.GameEntity
 import com.malky.bostatask.data.local.entities.GameWithDetails
 import com.malky.bostatask.data.local.entities.GenreEntity
 import com.malky.bostatask.data.local.entities.ScreenshotEntity
-import com.malky.bostatask.domain.GameDetails
 import com.malky.bostatask.utils.DataErrors
 import com.malky.bostatask.utils.Result
 

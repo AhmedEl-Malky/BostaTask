@@ -11,6 +11,7 @@ import com.malky.bostatask.data.mappers.toGameDetails
 import com.malky.bostatask.data.remote.GamesService
 import com.malky.bostatask.data.utils.query
 import com.malky.bostatask.domain.GameDetails
+import com.malky.bostatask.domain.GamesRepository
 import com.malky.bostatask.utils.DataErrors
 import com.malky.bostatask.utils.Result
 import com.malky.bostatask.utils.map
